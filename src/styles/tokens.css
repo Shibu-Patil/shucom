@@ -1,0 +1,61 @@
+:root {
+  color-scheme: light;
+
+  /* Core palette — deep navy, cool paper, burnt orange and electric blue */
+  --ink: #060f24;
+  --ink-2: #0a1733;
+  --ink-3: #0e2049;
+  --ink-4: #163164;
+  --cream: #fdf7eb;
+  --cream-2: #edf2fd;
+  --cream-3: #d9e3f6;
+  --white: #fffdf7;
+
+  --orange: #ff5f18;
+  --orange-bright: #ff8a3d;
+  --orange-deep: #d13d05;
+  --orange-soft: #ffbe8e;
+
+  /* Cool counterpoints to the orange — the second half of the identity */
+  --blue: #2f6bff;
+  --blue-bright: #6b98ff;
+  --blue-deep: #132fb0;
+  --sky: #8fc2ff;
+  --sky-soft: #d2e4ff;
+
+  /* Signature gradients */
+  --grad-primary: linear-gradient(135deg, #ff9a4d 0%, #ff5f18 48%, #e23c04 100%);
+  --grad-cool: linear-gradient(135deg, #7aa6ff 0%, #2f6bff 50%, #1536c9 100%);
+  --grad-ink: linear-gradient(155deg, #0c1a3c 0%, #060f24 54%, #0b1c46 100%);
+  --grad-ribbon: linear-gradient(100deg, #ff8a3d 0%, #ff5f18 46%, #ff4a0c 72%, #ff7a38 100%);
+
+  --sand: #c9c6d8;
+  --muted: #615d6e;
+  --muted-light: #a8b6d5;
+
+  --line: rgba(10, 18, 44, 0.12);
+  --line-strong: rgba(10, 18, 44, 0.24);
+  --line-light: rgba(210, 226, 255, 0.14);
+
+  --font-display: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+
+  --container: 1240px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --nav-height: 86px;
+
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 30px;
+  --radius-xl: 42px;
+
+  --shadow-sm: 0 10px 26px -18px rgba(6, 15, 36, 0.42);
+  --shadow-md: 0 30px 70px -40px rgba(6, 15, 36, 0.6);
+  --shadow-orange: 0 22px 50px -26px rgba(255, 95, 24, 0.72);
+  --shadow-blue: 0 22px 50px -26px rgba(47, 107, 255, 0.62);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
