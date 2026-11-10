@@ -1,5 +1,6 @@
 import { ArrowUpRight, Sparkles } from 'lucide-react'
 import { STUDIO_PROCESS } from '../data/site'
+import { asset } from '../lib/asset'
 import SectionHeading from './SectionHeading'
 
 export default function Studio() {
@@ -45,7 +46,7 @@ export default function Studio() {
           <div className="studio-collage" data-reveal style={{ '--d': '120ms' }}>
             <figure className="collage-photo collage-events">
               <img
-                src="/images/studio-events.jpg"
+                src={asset('/images/studio-events.jpg')}
                 alt="Confetti falling over a packed event crowd"
                 width="1600"
                 height="1067"
@@ -59,7 +60,7 @@ export default function Studio() {
 
             <figure className="collage-photo collage-team">
               <img
-                src="/images/studio-team.jpg"
+                src={asset('/images/studio-team.jpg')}
                 alt="Creative team collaborating around a table"
                 width="1600"
                 height="1067"
@@ -69,7 +70,7 @@ export default function Studio() {
 
             <figure className="collage-photo collage-design">
               <img
-                src="/images/studio-design.jpg"
+                src={asset('/images/studio-design.jpg')}
                 alt="Designer sketching artwork on a tablet beside printed proofs"
                 width="1280"
                 height="1600"

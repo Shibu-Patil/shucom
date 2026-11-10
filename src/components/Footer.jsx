@@ -1,5 +1,6 @@
 import { ArrowUp, ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react'
 import { CONTACT, NAV_LINKS } from '../data/site'
+import { asset } from '../lib/asset'
 
 const SERVICE_LINKS = [
   'Outdoor advertising',
@@ -33,7 +34,7 @@ export default function Footer() {
           <div className="footer-brand">
             <a className="brand brand-footer" href="#home">
               <span className="brand-mark">
-                <img src="/logo.png" alt="" width="42" height="42" />
+                <img src={asset('/logo.png')} alt="" width="42" height="42" />
               </span>
               <span className="brand-type">
                 <strong>SUBHASHREE</strong>

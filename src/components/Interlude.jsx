@@ -1,4 +1,5 @@
 import { ArrowUpRight } from 'lucide-react'
+import { asset } from '../lib/asset'
 import Showreel from './Showreel'
 
 export default function Interlude() {
@@ -6,7 +7,7 @@ export default function Interlude() {
     <section className="interlude" aria-label="Campaigns in the field">
       <div className="interlude-bg" aria-hidden="true">
         <img
-          src="/images/studio-venue.jpg"
+          src={asset('/images/studio-venue.jpg')}
           alt=""
           width="1600"
           height="1068"

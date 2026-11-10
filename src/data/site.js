@@ -1,3 +1,5 @@
+import { asset } from '../lib/asset'
+
 export const NAV_LINKS = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
@@ -280,7 +282,7 @@ export const PORTFOLIO = Array.from({ length: 31 }, (_, index) => {
 
   return {
     id: n,
-    src: `/images/Promotions_${n}.jpg`,
+    src: asset(`/images/Promotions_${n}.jpg`),
     ...meta,
   }
 })

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
+import { asset } from '../lib/asset'
 
 export default function Showreel() {
   const [open, setOpen] = useState(false)
@@ -83,8 +84,8 @@ export default function Showreel() {
 
                 <video
                   className="showreel-video"
-                  src="/media/showreel.mp4"
-                  poster="/media/showreel-poster.jpg"
+                  src={asset('/media/showreel.mp4')}
+                  poster={asset('/media/showreel-poster.jpg')}
                   controls
                   autoPlay
                   loop

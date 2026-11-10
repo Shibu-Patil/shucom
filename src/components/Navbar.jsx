@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ArrowUpRight, Menu, Phone, X } from 'lucide-react'
 import { CONTACT, NAV_LINKS } from '../data/site'
 import { useScrollSpy } from '../hooks/useScrollSpy'
+import { asset } from '../lib/asset'
 import ThreeMLogo from './ThreeMLogo'
 
 const SECTION_IDS = NAV_LINKS.map((link) => link.id)
@@ -59,7 +60,7 @@ export default function Navbar() {
             aria-label="Subhashree Communications — home"
           >
             <span className="brand-mark">
-              <img src="/logo.png" alt="" width="42" height="42" />
+              <img src={asset('/logo.png')} alt="" width="42" height="42" />
             </span>
             <span className="brand-type">
               <strong>SUBHASHREE</strong>
@@ -112,7 +113,7 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
               >
                 <span className="brand-mark">
-                  <img src="/logo.png" alt="" width="38" height="38" />
+                  <img src={asset('/logo.png')} alt="" width="38" height="38" />
                 </span>
                 <span className="brand-type">
                   <strong>SUBHASHREE</strong>

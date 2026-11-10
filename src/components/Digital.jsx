@@ -6,6 +6,7 @@ import {
   Send,
 } from 'lucide-react'
 import { DIGITAL_CHANNELS } from '../data/site'
+import { asset } from '../lib/asset'
 import Counter from './Counter'
 import SectionHeading from './SectionHeading'
 import {
@@ -82,7 +83,7 @@ export default function Digital() {
 
                 <div className="phone-screen">
                   <div className="phone-head">
-                    <img src="/logo.png" alt="" width="30" height="30" />
+                    <img src={asset('/logo.png')} alt="" width="30" height="30" />
                     <div>
                       <strong>subhashree</strong>
                       <span>Bhubaneswar · India</span>
@@ -95,7 +96,7 @@ export default function Digital() {
 
                   <div className="phone-photo">
                     <img
-                      src="/images/Promotions_5.jpg"
+                      src={asset('/images/Promotions_5.jpg')}
                       alt="Illuminated TPWODL rooftop signage at night"
                       width="1600"
                       height="860"

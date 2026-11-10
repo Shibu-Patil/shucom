@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { ArrowUpRight, Mail, Phone } from 'lucide-react'
 import { CONTACT } from '../data/site'
 import { MARK_PATH, MARK_ROTATIONS } from '../data/brand'
+import { asset } from '../lib/asset'
 import BrandMark from './BrandMark'
 import ThreeMLogo from './ThreeMLogo'
 
@@ -132,7 +133,7 @@ export default function Hero() {
 
           <figure className="hero-photo hero-photo-main">
             <img
-              src="/images/Promotions_4.jpg"
+              src={asset('/images/Promotions_4.jpg')}
               alt="SBI customer outreach exhibition stall by Subhashree Communications"
               width="1600"
               height="780"
@@ -144,7 +145,7 @@ export default function Hero() {
 
           <figure className="hero-photo hero-photo-sub">
             <img
-              src="/images/Promotions_5.jpg"
+              src={asset('/images/Promotions_5.jpg')}
               alt="Illuminated TPWODL rooftop signage at night"
               width="1600"
               height="860"
