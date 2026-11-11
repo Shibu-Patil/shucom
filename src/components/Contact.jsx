@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
-import emailjs from '@emailjs/browser'
+import { useRef, useState } from 'react'
 import {
   AlertCircle,
   CheckCircle2,
@@ -13,15 +12,11 @@ import { CONTACT, SERVICE_CATEGORIES } from '../data/site'
 import SectionHeading from './SectionHeading'
 import ThreeMLogo from './ThreeMLogo'
 
-const EMAILJS = {
-  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY ?? '',
-  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID ?? '',
-  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID ?? '',
-}
+const CONTACT_API = (import.meta.env.VITE_CONTACT_API_URL ?? '')
+  .trim()
+  .replace(/\/+$/, '')
 
-const EMAIL_CONFIGURED = Boolean(
-  EMAILJS.publicKey && EMAILJS.serviceId && EMAILJS.templateId,
-)
+const API_CONFIGURED = Boolean(CONTACT_API)
 
 const STATUS_ICON = {
   sending: Loader2,
@@ -41,35 +36,29 @@ export default function Contact() {
   const [status, setStatus] = useState('idle')
   const formRef = useRef(null)
 
-  useEffect(() => {
-    if (EMAIL_CONFIGURED) {
-      emailjs.init({ publicKey: EMAILJS.publicKey })
-    }
-  }, [])
-
   const handleSubmit = async (event) => {
     event.preventDefault()
     const form = event.currentTarget
     const data = new FormData(form)
     const payload = {
-      from_name: String(data.get('name') ?? '').trim(),
-      from_email: String(data.get('email') ?? '').trim(),
+      name: String(data.get('name') ?? '').trim(),
+      email: String(data.get('email') ?? '').trim(),
       phone: String(data.get('phone') ?? '').trim(),
       service: String(data.get('service') || 'Not specified'),
       message: String(data.get('message') ?? '').trim(),
-      to_email: CONTACT.email,
+      company: String(data.get('company') ?? ''),
     }
 
     setStatus('sending')
 
-    if (!EMAIL_CONFIGURED) {
+    if (!API_CONFIGURED) {
       const subject = encodeURIComponent(
-        `New enquiry from ${payload.from_name || 'the website'}`,
+        `New enquiry from ${payload.name || 'the website'}`,
       )
       const body = encodeURIComponent(
         [
-          `Name: ${payload.from_name}`,
-          `Email: ${payload.from_email}`,
+          `Name: ${payload.name}`,
+          `Email: ${payload.email}`,
           `Phone: ${payload.phone}`,
           `Service: ${payload.service}`,
           '',
@@ -82,16 +71,21 @@ export default function Contact() {
     }
 
     try {
-      await emailjs.send(
-        EMAILJS.serviceId,
-        EMAILJS.templateId,
-        payload,
-        { publicKey: EMAILJS.publicKey },
-      )
+      const response = await fetch(`${CONTACT_API}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        const result = await response.json().catch(() => ({}))
+        throw new Error(result.error || `Request failed (${response.status})`)
+      }
+
       form.reset()
       setStatus('success')
     } catch (error) {
-      console.error('EmailJS error:', error)
+      console.error('Contact form error:', error)
       setStatus('error')
     }
   }
@@ -179,6 +173,18 @@ export default function Contact() {
             </div>
 
             <form ref={formRef} onSubmit={handleSubmit}>
+              <div className="form-honeypot" aria-hidden="true">
+                <label>
+                  Company
+                  <input
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </label>
+              </div>
+
               <div className="form-row">
                 <label>
                   <span className="field-label">Full name *</span>

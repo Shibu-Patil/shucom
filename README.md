@@ -34,8 +34,8 @@ npm run preview   # preview the build
   and syncs with the region chips.
 - **Rebuilt portfolio** — autoplay carousel with pause/play, keyboard and swipe
   control, thumbnail rail, progress indicator, and a full-screen lightbox.
-- **Rebuilt contact form** — EmailJS integration with graceful `mailto:`
-  fallback when credentials are not configured.
+- **Rebuilt contact form** — posts to a standalone contact API with a graceful
+  `mailto:` fallback when the API URL is not configured.
 - **Responsive and accessible** — mobile menu, focus states, reduced-motion
   support, semantic sections, and descriptive alt text.
 
@@ -55,17 +55,19 @@ public/
 
 ## Contact form configuration
 
-The form uses EmailJS. Credentials are read from environment variables:
+The form posts to the companion API in `../shucom-api` (the `VITE_CONTACT_API_URL`
+build variable):
 
 ```bash
 cp .env.example .env
 # then fill in:
-VITE_EMAILJS_PUBLIC_KEY=
-VITE_EMAILJS_SERVICE_ID=
-VITE_EMAILJS_TEMPLATE_ID=
+VITE_CONTACT_API_URL=https://your-service.onrender.com
 ```
 
-Without them, the form opens the visitor's email app with the message
+On GitHub, add `VITE_CONTACT_API_URL` under **Settings → Secrets and variables →
+Actions → Variables** so the deploy workflow can inject it.
+
+Without the variable, the form opens the visitor's email app with the message
 prefilled, so nothing breaks.
 
 > `original/` contains the untouched source repository for reference.
