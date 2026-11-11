@@ -32,12 +32,19 @@ const STATUS_TEXT = {
   mail: 'Your email app is opening with the message ready to send.',
 }
 
+const REQUEST_TIMEOUT_MS = 75_000
+
 export default function Contact() {
   const [status, setStatus] = useState('idle')
+  const [statusNote, setStatusNote] = useState('')
   const formRef = useRef(null)
+  const inFlight = useRef(false)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    if (inFlight.current) return
+
     const form = event.currentTarget
     const data = new FormData(form)
     const payload = {
@@ -49,6 +56,7 @@ export default function Contact() {
       company: String(data.get('company') ?? ''),
     }
 
+    setStatusNote('')
     setStatus('sending')
 
     if (!API_CONFIGURED) {
@@ -70,23 +78,38 @@ export default function Contact() {
       return
     }
 
+    inFlight.current = true
+
     try {
       const response = await fetch(`${CONTACT_API}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       })
 
+      const result = await response.json().catch(() => ({}))
+
       if (!response.ok) {
-        const result = await response.json().catch(() => ({}))
-        throw new Error(result.error || `Request failed (${response.status})`)
+        const detail =
+          result.error ||
+          Object.values(result.errors ?? {})[0] ||
+          `Request failed (${response.status})`
+        throw new Error(detail)
       }
 
       form.reset()
       setStatus('success')
     } catch (error) {
       console.error('Contact form error:', error)
+      setStatusNote(
+        error?.name === 'TimeoutError'
+          ? 'The server took too long to respond. Please try again in a moment.'
+          : String(error?.message ?? ''),
+      )
       setStatus('error')
+    } finally {
+      inFlight.current = false
     }
   }
 
@@ -172,7 +195,11 @@ export default function Contact() {
               <span>Fields marked * are required</span>
             </div>
 
-            <form ref={formRef} onSubmit={handleSubmit}>
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              aria-busy={status === 'sending'}
+            >
               <div className="form-honeypot" aria-hidden="true">
                 <label>
                   Company
@@ -277,7 +304,17 @@ export default function Contact() {
                     size={17}
                     className={status === 'sending' ? 'spin' : undefined}
                   />
-                  {STATUS_TEXT[status]}
+                  <span>
+                    {status === 'error'
+                      ? statusNote || STATUS_TEXT.error
+                      : STATUS_TEXT[status]}
+                    {status === 'error' ? (
+                      <>
+                        {' '}
+                        <a href={CONTACT.emailHref}>Email us directly</a>.
+                      </>
+                    ) : null}
+                  </span>
                 </div>
               ) : null}
             </form>
