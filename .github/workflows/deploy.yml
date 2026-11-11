@@ -36,7 +36,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_CONTACT_API_URL: ${{ vars.VITE_CONTACT_API_URL }}
+          VITE_CONTACT_API_URL: ${{ vars.VITE_CONTACT_API_URL || 'https://shucom-bac.onrender.com' }}
 
       - name: Set Pages build type to GitHub Actions
         env:
