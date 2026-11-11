@@ -226,6 +226,7 @@ export default function Contact() {
                   inputMode="tel"
                   autoComplete="tel"
                   placeholder="+91 00000 00000"
+                  minLength={6}
                   required
                 />
               </label>
@@ -254,6 +255,7 @@ export default function Contact() {
                   name="message"
                   rows="5"
                   placeholder="Tell us about the campaign, timeline and budget…"
+                  minLength={10}
                   required
                 />
               </label>
