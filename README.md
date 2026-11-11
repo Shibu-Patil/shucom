@@ -34,8 +34,8 @@ npm run preview   # preview the build
   and syncs with the region chips.
 - **Rebuilt portfolio** — autoplay carousel with pause/play, keyboard and swipe
   control, thumbnail rail, progress indicator, and a full-screen lightbox.
-- **Rebuilt contact form** — posts to a standalone contact API with a graceful
-  `mailto:` fallback when the API URL is not configured.
+- **Rebuilt contact form** — posts to a small standalone server that emails the
+  enquiry; no email-app fallback.
 - **Responsive and accessible** — mobile menu, focus states, reduced-motion
   support, semantic sections, and descriptive alt text.
 
@@ -55,19 +55,17 @@ public/
 
 ## Contact form configuration
 
-The form posts to the companion API in `../shucom-api` (the `VITE_CONTACT_API_URL`
-build variable):
+The form posts to the companion server in `../shucom-api`. The URL lives in one
+place — `src/components/Contact.jsx`:
 
-```bash
-cp .env.example .env
-# then fill in:
-VITE_CONTACT_API_URL=https://your-service.onrender.com
+```js
+const CONTACT_API = 'https://shucom-bac.onrender.com'
 ```
 
-On GitHub, add `VITE_CONTACT_API_URL` under **Settings → Secrets and variables →
-Actions → Variables** so the deploy workflow can inject it.
+Override it without touching code by adding `VITE_CONTACT_API_URL` to `.env`
+locally or as an Actions variable on GitHub. The deploy workflow passes it
+through automatically.
 
-Without the variable, the form opens the visitor's email app with the message
-prefilled, so nothing breaks.
+The form always sends through the API — it never opens the visitor's email app.
 
 > `original/` contains the untouched source repository for reference.

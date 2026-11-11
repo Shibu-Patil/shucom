@@ -12,24 +12,22 @@ import { CONTACT, SERVICE_CATEGORIES } from '../data/site'
 import SectionHeading from './SectionHeading'
 import ThreeMLogo from './ThreeMLogo'
 
-const CONTACT_API = (import.meta.env.VITE_CONTACT_API_URL ?? '')
+const CONTACT_API = (
+  import.meta.env.VITE_CONTACT_API_URL || 'https://shucom-bac.onrender.com'
+)
   .trim()
   .replace(/\/+$/, '')
-
-const API_CONFIGURED = Boolean(CONTACT_API)
 
 const STATUS_ICON = {
   sending: Loader2,
   success: CheckCircle2,
   error: AlertCircle,
-  mail: Mail,
 }
 
 const STATUS_TEXT = {
   sending: 'Sending your message…',
-  success: 'Message sent. We’ll get back to you shortly.',
+  success: 'Thank you. We’ll get back to you shortly.',
   error: `Something went wrong. Please email us at ${CONTACT.email}.`,
-  mail: 'Your email app is opening with the message ready to send.',
 }
 
 const REQUEST_TIMEOUT_MS = 75_000
@@ -59,25 +57,6 @@ export default function Contact() {
     setStatusNote('')
     setStatus('sending')
 
-    if (!API_CONFIGURED) {
-      const subject = encodeURIComponent(
-        `New enquiry from ${payload.name || 'the website'}`,
-      )
-      const body = encodeURIComponent(
-        [
-          `Name: ${payload.name}`,
-          `Email: ${payload.email}`,
-          `Phone: ${payload.phone}`,
-          `Service: ${payload.service}`,
-          '',
-          payload.message,
-        ].join('\n'),
-      )
-      window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`
-      setStatus('mail')
-      return
-    }
-
     inFlight.current = true
 
     try {
@@ -102,11 +81,14 @@ export default function Contact() {
       setStatus('success')
     } catch (error) {
       console.error('Contact form error:', error)
-      setStatusNote(
+      const message = String(error?.message ?? '')
+      const friendly =
         error?.name === 'TimeoutError'
           ? 'The server took too long to respond. Please try again in a moment.'
-          : String(error?.message ?? ''),
-      )
+          : /failed to fetch|network|load failed/i.test(message)
+            ? ''
+            : message
+      setStatusNote(friendly)
       setStatus('error')
     } finally {
       inFlight.current = false
@@ -308,12 +290,6 @@ export default function Contact() {
                     {status === 'error'
                       ? statusNote || STATUS_TEXT.error
                       : STATUS_TEXT[status]}
-                    {status === 'error' ? (
-                      <>
-                        {' '}
-                        <a href={CONTACT.emailHref}>Email us directly</a>.
-                      </>
-                    ) : null}
                   </span>
                 </div>
               ) : null}
