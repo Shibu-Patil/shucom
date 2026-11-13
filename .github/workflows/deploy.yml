@@ -9,6 +9,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: write
 
 concurrency:
   group: pages
@@ -52,15 +53,29 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Clear old Pages artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # A re-run keeps the previous attempt's artifact, and deploy-pages
+          # fails when two artifacts share the name.
+          ids=$(curl -sS \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts?per_page=100" \
+            | python3 -c "import sys,json;print(' '.join(str(a['id']) for a in json.load(sys.stdin)['artifacts'] if a['name']=='github-pages'))")
+          for id in $ids; do
+            curl -sS -X DELETE \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$id"
+          done
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Unique per attempt so a re-run can't collide with the old artifact.
-          name: github-pages-${{ github.run_attempt }}
           path: dist
 
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: github-pages-${{ github.run_attempt }}
