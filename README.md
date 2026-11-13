@@ -59,7 +59,7 @@ The form posts to the companion server in `../shucom-api`. The URL lives in one
 place — `src/components/Contact.jsx`:
 
 ```js
-const CONTACT_API = 'https://shucom-back.vercel.app'
+const CONTACT_API = 'https://shucom-back-shub-e64b.vercel.app'
 ```
 
 Override it without touching code by adding `VITE_CONTACT_API_URL` to `.env`

@@ -13,7 +13,7 @@ import SectionHeading from './SectionHeading'
 import ThreeMLogo from './ThreeMLogo'
 
 const CONTACT_API = (
-  import.meta.env.VITE_CONTACT_API_URL || 'https://shucom-back.vercel.app'
+  import.meta.env.VITE_CONTACT_API_URL || 'https://shucom-back-shub-e64b.vercel.app'
 )
   .trim()
   .replace(/\/+$/, '')
